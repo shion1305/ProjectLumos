@@ -12,7 +12,7 @@ import java.util.logging.Logger;
 public class DiscordActivityMonitor  {
     Logger logger;
     public static void main(String[] args) throws InterruptedException {
-        GatewayDiscordClient client = DiscordClient.create("ODU5MTExNzM4ODA4ODYwNjgz.YNn8KA.KUhUktJiR3uyk3waEdqTlWsd3aQ").login().block();
+        GatewayDiscordClient client = DiscordClient.create(ConfigManager.getConfig("DiscordToken")).login().block();
         client.updatePresence(ClientPresence.invisible()).subscribe();
         client.on(VoiceStateUpdateEvent.class)
                 .filter(voiceChannelUpdateEvent -> voiceChannelUpdateEvent.getCurrent().getGuildId().asLong() == 894226019240800276L)

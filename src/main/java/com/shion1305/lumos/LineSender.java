@@ -2,9 +2,13 @@ package com.shion1305.lumos;
 
 import okhttp3.*;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 import java.sql.*;
 import java.sql.Connection;
+import java.util.Properties;
 
 public class LineSender {
     MediaType mType;
@@ -12,8 +16,8 @@ public class LineSender {
     String token;
 
     public static void main(String[] args) {
-//        String token = "3AyrdKacu5K+pJyzBkU4H+brHG7PSKgsOYz8hPdk/CxvXpToIJA5OqUBmD1gpnL9o+4hrhNlc8Z2HhwK1oiWVSTAzyyrNihYSIosDqOtZrCmneA/Fde8xwyQ3iooZHMG7aaoV3nxdKjHwnEjTdY/0QdB04t89/1O/w1cDnyilFU=";
-//        LineSender sender = new LineSender(token);
+//        String lineToken = ConfigManager.getConfig("LineMessagingToken");
+//                LineSender sender = new LineSender(lineToken);
 //        String message = "{\"type\": \"bubble\",\"hero\": {\"type\": \"image\",\"url\": \"https://scdn.line-apps.com/n/channel_devcenter/img/fx/01_1_cafe.png\",\"size\": \"full\",\"aspectRatio\": \"20:13\",\"aspectMode\": \"cover\",\"action\": {\"type\": \"uri\",\"uri\": \"http://linecorp.com/\"}},\"body\": {\"type\": \"box\",\"layout\": \"vertical\",\"contents\": [{\"type\": \"text\",\"text\": \"Lumos-出欠確認!\",\"weight\": \"bold\",\"size\": \"xl\"},{\"type\": \"box\",\"layout\": \"vertical\",\"margin\": \"lg\",\"spacing\": \"sm\",\"contents\": [{\"type\": \"box\",\"layout\": \"baseline\",\"spacing\": \"sm\",\"contents\": [{\"type\": \"text\",\"text\": \"以下の日程でMTGを開く予定です!\",\"wrap\": true,\"color\": \"#666666\",\"size\": \"md\",\"flex\": 5,\"margin\": \"md\"}]},{\"type\": \"box\",\"layout\": \"baseline\",\"spacing\": \"sm\",\"contents\": [{\"type\": \"text\",\"text\": \"Time\",\"color\": \"#aaaaaa\",\"size\": \"sm\",\"flex\": 1},{\"type\": \"text\",\"text\": \"" + "\",\"wrap\": true,\"color\": \"#666666\",\"size\": \"sm\",\"flex\": 5}]}]}]},\"footer\": {\"type\": \"box\",\"layout\": \"vertical\",\"spacing\": \"sm\",\"contents\": [{\"type\": \"button\",\"style\": \"primary\",\"height\": \"sm\",\"action\": {\"type\": \"message\",\"label\": \"参加予定!\",\"text\": \"参加予定\"}},{\"type\": \"button\",\"style\": \"secondary\",\"height\": \"sm\",\"action\": {\"type\": \"message\",\"label\": \"遅れて参加!\",\"text\": \"遅れて参加!\"}},{\"type\": \"button\",\"style\": \"secondary\",\"height\": \"sm\",\"action\": {\"type\": \"message\",\"label\": \"欠席します\",\"text\": \"欠席します\"}}],\"flex\": 0}}";
         String serverName = "localhost";
         String mydatabase = "mydatabase";
