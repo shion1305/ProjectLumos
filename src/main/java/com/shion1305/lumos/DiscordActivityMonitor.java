@@ -7,10 +7,12 @@ import discord4j.core.object.VoiceState;
 import discord4j.core.object.entity.Member;
 import discord4j.core.object.presence.ClientPresence;
 
+import java.util.ArrayList;
 import java.util.logging.Logger;
 
 public class DiscordActivityMonitor  {
     Logger logger;
+   static ArrayList<Long> ids=new ArrayList<>();
     public static void main(String[] args) throws InterruptedException {
         GatewayDiscordClient client = DiscordClient.create(ConfigManager.getConfig("DiscordToken")).login().block();
         client.updatePresence(ClientPresence.invisible()).subscribe();
@@ -19,7 +21,7 @@ public class DiscordActivityMonitor  {
                 .subscribe(voiceChannelUpdateEvent -> {
                     VoiceState vs = voiceChannelUpdateEvent.getCurrent();
                     Member member=vs.getMember().block();
-                    System.out.println("EVENT RECEIVED");
+                    ids.add(member.getId().asLong());
                     System.out.println(member.getId().asLong());
                     System.out.println(member.getAvatarUrl());
                 });

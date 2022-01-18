@@ -27,7 +27,7 @@ dependencies {
     implementation('org.glassfish.jersey.media:jersey-media-json-jackson:2.34')
     implementation('org.glassfish.jersey.inject:jersey-cdi2-se:2.34')
     implementation('org.jboss.weld.se:weld-se-core:3.1.8.Final')
-    implementation 'com.linecorp.bot:line-bot-api-client:4.6.0'
+    implementation 'com.linecorp.bot:line-bot-api-client:4.7.0'
     implementation('com.squareup.okhttp3:okhttp:4.9.2')
     implementation('com.discord4j:discord4j-core:3.2.1')
 
