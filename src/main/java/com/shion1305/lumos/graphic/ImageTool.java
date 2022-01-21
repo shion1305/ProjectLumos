@@ -24,4 +24,10 @@ public class ImageTool {
         g2d.dispose();
         return dimg;
     }
+
+    public static int transparentEffect(int argb, double ratio) {
+        int a = (int) (((argb & 0xff000000) >>> 24) * ratio);
+        int rgb = argb & 0xffffff;
+        return a << 24 | rgb;
+    }
 }

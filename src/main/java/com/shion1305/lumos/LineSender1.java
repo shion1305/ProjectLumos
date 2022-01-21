@@ -30,10 +30,10 @@ public class LineSender1 {
         ArrayList<FlexComponent> bodyItems = new ArrayList<>();
         Box.BoxBuilder imageB = Box.builder().layout(FlexLayout.HORIZONTAL);
         ArrayList<FlexComponent> images = new ArrayList<>();
-//        images.add(Image.builder().url(URI.create("https://shion1305.com/test_icon.png")).build());
-//        images.add(Image.builder().url(URI.create("https://shion1305.com/test_icon.png")).build());
-//        images.add(Image.builder().url(URI.create("https://shion1305.com/test_icon.png")).build());
-//        images.add(Image.builder().url(URI.create("https://shion1305.com/test_icon.png")).build());
+        images.add(Image.builder().url(URI.create("https://shion1305.com/Lumos/image/706873888461684866.png")).build());
+        images.add(Image.builder().url(URI.create("https://shion1305.com/Lumos/image/706873888461684866.png")).build());
+        images.add(Image.builder().url(URI.create("https://shion1305.com/Lumos/image/706873888461684866.png")).build());
+        images.add(Image.builder().url(URI.create("https://shion1305.com/Lumos/image/706873888461684866.png")).build());
         imageB.contents(images)
                 .width("100%")
                 .alignItems(FlexAlignItems.CENTER)
@@ -43,7 +43,7 @@ public class LineSender1 {
 
         Box.BoxBuilder nextPB = Box.builder().layout(FlexLayout.HORIZONTAL);
         ArrayList<FlexComponent> nextPBItem = new ArrayList<>();
-        nextPBItem.add(Image.builder().url(URI.create("https://shion1305.com/next-x.png")).build());
+        nextPBItem.add(Image.builder().url(URI.create("https://shion1305.com/Lumos/next1.png")).build());
         Box.BoxBuilder nextB = Box.builder().layout(FlexLayout.VERTICAL);
         ArrayList<FlexComponent> nextBItem = new ArrayList<>();
         nextBItem.add(Text.builder().text("次の活動日").align(FlexAlign.START).color("#ffffff").margin(FlexMarginSize.NONE).size("xxs").offsetTop("10px").offsetStart("20%").build());
@@ -58,8 +58,8 @@ public class LineSender1 {
                 .margin(FlexMarginSize.NONE)
                 .alignItems(FlexAlignItems.CENTER);
         bodyItems.add(nextPB.build());
-//        bodyItems.add(Image.builder().url(URI.create("https://shion1305.com/LumosLogo.png")).aspectMode(Image.ImageAspectMode.Fit)
-//                .margin(FlexMarginSize.NONE).size("60%").gravity(FlexGravity.TOP).aspectRatio(Image.ImageAspectRatio.R2TO1).build());
+        bodyItems.add(Image.builder().url(URI.create("https://158.101.84.209/Lumos/image/LumosLogo.png")).aspectMode(Image.ImageAspectMode.Fit)
+                .margin(FlexMarginSize.NONE).size("60%").gravity(FlexGravity.TOP).aspectRatio(Image.ImageAspectRatio.R2TO1).build());
         bodyB.contents(bodyItems)
                 .background(BoxLinearGradient.builder().angle("60deg")
                         .startColor("#282929")

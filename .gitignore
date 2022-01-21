@@ -1,1 +1,6 @@
 /config.properties
+/.idea
+/out
+/gradle
+/build
+/.gradle
