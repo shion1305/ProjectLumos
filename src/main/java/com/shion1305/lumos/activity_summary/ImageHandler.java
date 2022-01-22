@@ -67,7 +67,7 @@ public class ImageHandler extends HttpServlet implements ServletContextListener 
 
     }
 
-    public void loadIcons() {
+    public static void loadIcons() {
         Guild guild = DiscordClientManager.getClient().getGuildById(Snowflake.of(894226019240800276L)).block();
         guild.getMembers().subscribe(member -> {
             logger.info(member.getDisplayName());

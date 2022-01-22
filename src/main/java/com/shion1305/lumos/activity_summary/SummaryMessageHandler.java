@@ -86,6 +86,8 @@ public class SummaryMessageHandler implements ServletContextListener {
                     SimpleDateFormat dateT = new SimpleDateFormat("HH:mm~");
                     message = new SummaryLineMessageBuilder(date, result, dateF.format(nextDate), dateT.format(nextDate)).build();
                 }
+                //reload icons in ImageHandler
+                ImageHandler.loadIcons();
                 LineMessagingClient client = LineMessagingClient.builder(ConfigManager.getConfig("LineMessagingToken")).build();
                 try {
                     client.pushMessage(new PushMessage(ConfigManager.getConfig("TargetLineClient"), message)).get();
