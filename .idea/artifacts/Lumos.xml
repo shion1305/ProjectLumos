@@ -1,5 +1,5 @@
 <component name="ArtifactManager">
-  <artifact type="war" build-on-make="true" name="Lumos">
+  <artifact type="war" name="Lumos">
     <output-path>$PROJECT_DIR$/out/artifacts/Lumos</output-path>
     <root id="archive" name="Lumos.war">
       <element id="directory" name="WEB-INF">
