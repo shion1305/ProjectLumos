@@ -4,13 +4,10 @@ import com.linecorp.bot.client.LineMessagingClient;
 import com.linecorp.bot.model.PushMessage;
 import com.linecorp.bot.model.message.FlexMessage;
 import com.shion1305.lumos.general.ConfigManager;
-import com.shion1305.lumos.general.TimerManager;
 
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import java.io.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -19,9 +16,11 @@ import java.util.logging.Logger;
 
 public class SummaryMessageHandler implements ServletContextListener {
     private static DiscordVoiceMonitor monitor;
-    private static Logger logger = Logger.getLogger("SummaryMessageSystem");
+    private static final Logger logger = Logger.getLogger("SummaryMessageSystem");
     static final SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd HH:mm", Locale.ENGLISH);
     private static List<Date> dates = new ArrayList<>();
+    private static Timer timer = new Timer();
+    private static Timer timer1 = new Timer();
 
     @Override
     public void contextInitialized(ServletContextEvent sce) {
@@ -30,6 +29,10 @@ public class SummaryMessageHandler implements ServletContextListener {
     }
 
     public static void readConfig() {
+        timer.cancel();
+        timer.purge();
+        timer = new Timer();
+        dates = new ArrayList<>();
         try (FileInputStream stream = new FileInputStream(System.getProperty("user.home") + "/Lumos/schedule.data")) {
             Scanner scanner = new Scanner(stream);
             //read all dates from schedule.data
@@ -41,10 +44,9 @@ public class SummaryMessageHandler implements ServletContextListener {
                     }
                 }
             }
-            logger.info(dates.toArray().toString());
             formatData();
             for (Date date : dates) {
-                TimerManager.schedule(generateTask(), date);
+                timer.schedule(generateTask(), date);
                 logger.info("Scheduled at " + date.toString());
             }
         } catch (FileNotFoundException e) {
@@ -63,9 +65,10 @@ public class SummaryMessageHandler implements ServletContextListener {
                 monitor = new DiscordVoiceMonitor();
                 monitor.start();
                 Calendar calendar = Calendar.getInstance();
-                calendar.add(Calendar.MINUTE, 1);
+                calendar.set(Calendar.HOUR_OF_DAY, 23);
+                calendar.set(Calendar.MINUTE, 59);
                 SimpleDateFormat dateF = new SimpleDateFormat("M/d");
-                TimerManager.schedule(generateEndTask(dateF.format(new Date())), calendar.getTime());
+                timer1.schedule(generateEndTask(dateF.format(new Date())), calendar.getTime());
             }
         };
     }
@@ -85,7 +88,7 @@ public class SummaryMessageHandler implements ServletContextListener {
                 }
                 LineMessagingClient client = LineMessagingClient.builder(ConfigManager.getConfig("LineMessagingToken")).build();
                 try {
-                    client.pushMessage(new PushMessage("U68c3c8e484974b3ca784315d1c2d23ec", message)).get();
+                    client.pushMessage(new PushMessage(ConfigManager.getConfig("TargetLineClient"), message)).get();
                 } catch (InterruptedException | ExecutionException e) {
                     logger.severe("FAILED TO SEND MESSAGE");
                     e.printStackTrace();
@@ -95,7 +98,7 @@ public class SummaryMessageHandler implements ServletContextListener {
     }
 
 
-    private static Date resolveExpression(String exp) {
+    public static Date resolveExpression(String exp) {
         try {
             return format.parse(exp);
         } catch (ParseException e) {
@@ -106,6 +109,21 @@ public class SummaryMessageHandler implements ServletContextListener {
     private static void formatData() {
         dates.removeIf(date -> date.before(new Date()));
         dates.sort((o1, o2) -> o1.after(o2) ? 1 : -1);
+        new Thread(() -> {
+            StringBuilder out = new StringBuilder();
+            for (Date date : dates) {
+                out.append(format.format(date));
+                out.append("\n");
+            }
+            try (PrintWriter writer = new PrintWriter(new FileOutputStream(System.getProperty("user.home") + "/Lumos/schedule.data", false))) {
+                writer.write(out.toString());
+                writer.flush();
+                logger.info("UPDATED");
+            } catch (IOException e) {
+                logger.info("FAILED to update schedule data");
+                e.printStackTrace();
+            }
+        }).start();
     }
 
     public static Date getNextDate() {

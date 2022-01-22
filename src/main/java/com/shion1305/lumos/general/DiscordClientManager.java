@@ -2,7 +2,6 @@ package com.shion1305.lumos.general;
 
 import discord4j.core.DiscordClient;
 import discord4j.core.GatewayDiscordClient;
-import discord4j.core.object.presence.ClientPresence;
 import discord4j.gateway.intent.IntentSet;
 
 public class DiscordClientManager {
@@ -12,7 +11,7 @@ public class DiscordClientManager {
         if (client == null) {
             client = DiscordClient.create(ConfigManager.getConfig("DiscordToken")).gateway()
                     .setEnabledIntents(IntentSet.all())
-                    .setInitialPresence(s -> ClientPresence.idle()).login().block();
+                    .login().block();
         }
         return client;
     }

@@ -24,7 +24,7 @@ import java.util.regex.Pattern;
 
 @WebServlet("/image/*")
 public class ImageHandler extends HttpServlet implements ServletContextListener {
-    private static Logger logger = Logger.getLogger("ImageHandler");
+    private static final Logger logger = Logger.getLogger("ImageHandler");
     private static HashMap<String, byte[]> data;
 
     @Override
@@ -59,7 +59,6 @@ public class ImageHandler extends HttpServlet implements ServletContextListener 
 
     @Override
     public void contextInitialized(ServletContextEvent sce) {
-        logger.warning("LOG ACTIVATED");
         data = new HashMap<>();
         //start loading discord icons
         loadIcons();
