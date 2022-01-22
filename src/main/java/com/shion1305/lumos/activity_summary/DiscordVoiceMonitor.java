@@ -32,8 +32,10 @@ public class DiscordVoiceMonitor {
         logger = Logger.getLogger("DiscordVSMonitor");
     }
 
-
     public void start() {
+        if (process!=null){
+            if (!process.isDisposed())process.dispose();
+        }
         process = DiscordClientManager.getClient().on(VoiceStateUpdateEvent.class)
                 .filter(event -> event.getCurrent().getGuildId().asLong() == 894226019240800276L)
                 .subscribe(voiceStateUpdateEvent -> {
