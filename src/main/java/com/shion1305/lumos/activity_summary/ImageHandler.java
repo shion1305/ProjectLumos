@@ -1,6 +1,7 @@
-package com.shion1305.lumos;
+package com.shion1305.lumos.activity_summary;
 
 import com.shion1305.components.fileio.FileDownloader;
+import com.shion1305.lumos.general.DiscordClientManager;
 import com.shion1305.lumos.graphic.ImageTool;
 import discord4j.common.util.Snowflake;
 import discord4j.core.object.entity.Guild;
@@ -116,9 +117,4 @@ public class ImageHandler extends HttpServlet implements ServletContextListener 
         data.put(filename, imgData);
         logger.warning(filename + " is loaded");
     }
-
-//    public static void main(String[] args) throws IOException {
-//        BufferedImage image = ImageIO.read(new File("test3.png"));
-//        ImageIO.write(createRoundIcon(image), "png", new File("testImage.png"));
-//    }
 }

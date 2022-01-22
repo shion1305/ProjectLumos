@@ -1,4 +1,4 @@
-package com.shion1305.lumos;
+package com.shion1305.lumos.general;
 
 import discord4j.core.DiscordClient;
 import discord4j.core.GatewayDiscordClient;

@@ -1,0 +1,104 @@
+<component name="ArtifactManager">
+  <artifact type="war" build-on-make="true" name="Lumos">
+    <output-path>$PROJECT_DIR$/out/artifacts/Lumos</output-path>
+    <root id="archive" name="Lumos.war">
+      <element id="directory" name="WEB-INF">
+        <element id="directory" name="classes">
+          <element id="module-output" name="Lumos.main" />
+        </element>
+        <element id="directory" name="lib">
+          <element id="library" level="project" name="Gradle: org.glassfish.jersey.containers:jersey-container-servlet:2.34" />
+          <element id="library" level="project" name="Gradle: org.glassfish.jersey.media:jersey-media-json-jackson:2.34" />
+          <element id="library" level="project" name="Gradle: org.glassfish.jersey.inject:jersey-cdi2-se:2.34" />
+          <element id="library" level="project" name="Gradle: org.jboss.weld.se:weld-se-core:3.1.8.Final" />
+          <element id="library" level="project" name="Gradle: com.linecorp.bot:line-bot-api-client:4.7.0" />
+          <element id="library" level="project" name="Gradle: com.squareup.okhttp3:okhttp:4.9.2" />
+          <element id="library" level="project" name="Gradle: com.discord4j:discord4j-core:3.2.1" />
+          <element id="library" level="project" name="Gradle: org.glassfish.jersey.containers:jersey-container-servlet-core:2.34" />
+          <element id="library" level="project" name="Gradle: org.glassfish.jersey.core:jersey-server:2.34" />
+          <element id="library" level="project" name="Gradle: org.glassfish.jersey.core:jersey-common:2.34" />
+          <element id="library" level="project" name="Gradle: jakarta.ws.rs:jakarta.ws.rs-api:2.1.6" />
+          <element id="library" level="project" name="Gradle: org.glassfish.jersey.ext:jersey-entity-filtering:2.34" />
+          <element id="library" level="project" name="Gradle: com.fasterxml.jackson.module:jackson-module-jaxb-annotations:2.12.5" />
+          <element id="library" level="project" name="Gradle: com.fasterxml.jackson.core:jackson-databind:2.12.5" />
+          <element id="library" level="project" name="Gradle: com.fasterxml.jackson.core:jackson-annotations:2.12.5" />
+          <element id="library" level="project" name="Gradle: org.jboss.weld.environment:weld-environment-common:3.1.8.Final" />
+          <element id="library" level="project" name="Gradle: org.jboss.weld.probe:weld-probe-core:3.1.8.Final" />
+          <element id="library" level="project" name="Gradle: jakarta.enterprise:jakarta.enterprise.cdi-api:2.0.2" />
+          <element id="library" level="project" name="Gradle: org.jboss.classfilewriter:jboss-classfilewriter:1.2.5.Final" />
+          <element id="library" level="project" name="Gradle: com.linecorp.bot:line-bot-model:4.7.0" />
+          <element id="library" level="project" name="Gradle: com.squareup.okio:okio:2.8.0" />
+          <element id="library" level="project" name="Gradle: org.jetbrains.kotlin:kotlin-stdlib:1.4.10" />
+          <element id="library" level="project" name="Gradle: com.discord4j:discord4j-rest:3.2.1" />
+          <element id="library" level="project" name="Gradle: com.discord4j:discord4j-gateway:3.2.1" />
+          <element id="library" level="project" name="Gradle: com.discord4j:discord4j-voice:3.2.1" />
+          <element id="library" level="project" name="Gradle: com.discord4j:discord-json:1.6.11" />
+          <element id="library" level="project" name="Gradle: com.discord4j:stores-jdk:3.2.1" />
+          <element id="library" level="project" name="Gradle: org.glassfish.hk2.external:jakarta.inject:2.6.1" />
+          <element id="library" level="project" name="Gradle: org.glassfish.jersey.core:jersey-client:2.34" />
+          <element id="library" level="project" name="Gradle: jakarta.annotation:jakarta.annotation-api:1.3.5" />
+          <element id="library" level="project" name="Gradle: jakarta.validation:jakarta.validation-api:2.0.2" />
+          <element id="library" level="project" name="Gradle: org.glassfish.hk2:osgi-resource-locator:1.0.3" />
+          <element id="library" level="project" name="Gradle: com.fasterxml.jackson.core:jackson-core:2.12.5" />
+          <element id="library" level="project" name="Gradle: jakarta.xml.bind:jakarta.xml.bind-api:2.3.2" />
+          <element id="library" level="project" name="Gradle: jakarta.activation:jakarta.activation-api:1.2.1" />
+          <element id="library" level="project" name="Gradle: org.jboss.weld:weld-core-impl:3.1.8.Final" />
+          <element id="library" level="project" name="Gradle: jakarta.inject:jakarta.inject-api:1.0" />
+          <element id="library" level="project" name="Gradle: org.jetbrains.kotlin:kotlin-stdlib-common:1.4.10" />
+          <element id="library" level="project" name="Gradle: org.jetbrains:annotations:13.0" />
+          <element id="library" level="project" name="Gradle: com.discord4j:discord4j-common:3.2.1" />
+          <element id="library" level="project" name="Gradle: io.projectreactor.addons:reactor-extra:3.4.5" />
+          <element id="library" level="project" name="Gradle: com.discord4j:simple-fsm:1.0.1" />
+          <element id="library" level="project" name="Gradle: com.discord4j:discord-json-api:1.6.11" />
+          <element id="library" level="project" name="Gradle: com.discord4j:stores-api:3.2.1" />
+          <element id="library" level="project" name="Gradle: org.jboss.weld:weld-spi:3.1.SP4" />
+          <element id="library" level="project" name="Gradle: org.jboss.weld:weld-api:3.1.SP4" />
+          <element id="library" level="project" name="Gradle: org.jboss.spec.javax.annotation:jboss-annotations-api_1.3_spec:2.0.1.Final" />
+          <element id="library" level="project" name="Gradle: org.jboss.spec.javax.el:jboss-el-api_3.0_spec:2.0.0.Final" />
+          <element id="library" level="project" name="Gradle: org.jboss.spec.javax.interceptor:jboss-interceptors-api_1.2_spec:2.0.0.Final" />
+          <element id="library" level="project" name="Gradle: org.jboss.logging:jboss-logging:3.4.2.Final" />
+          <element id="library" level="project" name="Gradle: com.fasterxml.jackson.datatype:jackson-datatype-jdk8:2.12.5" />
+          <element id="library" level="project" name="Gradle: io.projectreactor.netty:reactor-netty-http:1.0.13" />
+          <element id="library" level="project" name="Gradle: com.github.ben-manes.caffeine:caffeine:2.8.8" />
+          <element id="library" level="project" name="Gradle: io.projectreactor:reactor-core:3.4.12" />
+          <element id="library" level="project" name="Gradle: com.austinv11.servicer:Servicer:1.0.3" />
+          <element id="library" level="project" name="Gradle: io.projectreactor.netty:reactor-netty-core:1.0.13" />
+          <element id="library" level="project" name="Gradle: io.netty:netty-codec-http2:4.1.70.Final" />
+          <element id="library" level="project" name="Gradle: io.netty:netty-codec-http:4.1.70.Final" />
+          <element id="library" level="project" name="Gradle: io.netty:netty-resolver-dns-native-macos:osx-x86_64:4.1.70.Final" />
+          <element id="library" level="project" name="Gradle: io.netty:netty-resolver-dns:4.1.70.Final" />
+          <element id="library" level="project" name="Gradle: io.netty:netty-transport-native-epoll:linux-x86_64:4.1.70.Final" />
+          <element id="library" level="project" name="Gradle: org.checkerframework:checker-qual:3.8.0" />
+          <element id="library" level="project" name="Gradle: com.google.errorprone:error_prone_annotations:2.4.0" />
+          <element id="library" level="project" name="Gradle: org.reactivestreams:reactive-streams:1.0.3" />
+          <element id="library" level="project" name="Gradle: io.netty:netty-handler-proxy:4.1.70.Final" />
+          <element id="library" level="project" name="Gradle: io.netty:netty-handler:4.1.70.Final" />
+          <element id="library" level="project" name="Gradle: io.netty:netty-codec:4.1.70.Final" />
+          <element id="library" level="project" name="Gradle: io.netty:netty-transport:4.1.70.Final" />
+          <element id="library" level="project" name="Gradle: io.netty:netty-buffer:4.1.70.Final" />
+          <element id="library" level="project" name="Gradle: io.netty:netty-common:4.1.70.Final" />
+          <element id="library" level="project" name="Gradle: io.netty:netty-resolver-dns-classes-macos:4.1.70.Final" />
+          <element id="library" level="project" name="Gradle: io.netty:netty-codec-dns:4.1.70.Final" />
+          <element id="library" level="project" name="Gradle: io.netty:netty-resolver:4.1.70.Final" />
+          <element id="library" level="project" name="Gradle: io.netty:netty-transport-classes-epoll:4.1.70.Final" />
+          <element id="library" level="project" name="Gradle: io.netty:netty-transport-native-unix-common:4.1.70.Final" />
+          <element id="library" level="project" name="Gradle: io.netty:netty-codec-socks:4.1.70.Final" />
+          <element id="library" level="project" name="Gradle: com.squareup.okhttp3:logging-interceptor:3.14.9" />
+          <element id="library" level="project" name="Gradle: com.squareup.retrofit2:converter-jackson:2.9.0" />
+          <element id="library" level="project" name="Gradle: com.squareup.retrofit2:retrofit:2.9.0" />
+          <element id="library" level="project" name="Gradle: org.slf4j:slf4j-api:1.7.32" />
+          <element id="library" level="project" name="Gradle: com.fasterxml.jackson.module:jackson-module-parameter-names:2.12.5" />
+          <element id="library" level="project" name="Gradle: com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.12.5" />
+          <element id="library" level="project" name="Gradle: com.google.code.findbugs:jsr305:3.0.2" />
+          <element id="library" level="project" name="Gradle: org.junit.jupiter:junit-jupiter-api:5.7.1" />
+          <element id="library" level="project" name="Gradle: org.junit.platform:junit-platform-commons:1.7.1" />
+          <element id="library" level="project" name="Gradle: org.apiguardian:apiguardian-api:1.1.0" />
+          <element id="library" level="project" name="Gradle: org.opentest4j:opentest4j:1.2.0" />
+          <element id="library" level="project" name="Gradle: org.junit.jupiter:junit-jupiter-engine:5.7.1" />
+          <element id="library" level="project" name="Gradle: org.junit.platform:junit-platform-engine:1.7.1" />
+        </element>
+      </element>
+      <element id="javaee-facet-resources" facet="Lumos.main/web/Web Gradle : Lumos-1.0-SNAPSHOT.war" />
+    </root>
+  </artifact>
+</component>

@@ -1,4 +1,4 @@
-package com.shion1305.lumos;
+package com.shion1305.lumos.general;
 
 import java.io.FileInputStream;
 import java.io.IOException;
