@@ -1,7 +1,6 @@
 package com.shion1305.lumos.activity_summary;
 
 import com.shion1305.lumos.general.DiscordClientManager;
-import discord4j.core.GatewayDiscordClient;
 import discord4j.core.event.domain.VoiceStateUpdateEvent;
 import discord4j.core.object.VoiceState;
 import discord4j.core.object.entity.Member;
