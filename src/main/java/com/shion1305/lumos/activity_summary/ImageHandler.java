@@ -14,10 +14,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.awt.image.BufferedImage;
-import java.io.ByteArrayOutputStream;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.OutputStream;
+import java.io.*;
 import java.util.HashMap;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
@@ -70,9 +67,8 @@ public class ImageHandler extends HttpServlet implements ServletContextListener 
     public static void loadIcons() {
         Guild guild = DiscordClientManager.getClient().getGuildById(Snowflake.of(894226019240800276L)).block();
         guild.getMembers().subscribe(member -> {
-            logger.info(member.getDisplayName());
-            try {
-                BufferedImage image = ImageIO.read(new FileDownloader(member.getAvatarUrl()).getStream());
+            try (InputStream stream = new FileDownloader(member.getAvatarUrl()).getStream()) {
+                BufferedImage image = ImageIO.read(stream);
                 image = createRoundIcon(image);
                 try (ByteArrayOutputStream bos = new ByteArrayOutputStream()) {
                     ImageIO.write(image, "png", bos);
@@ -114,6 +110,6 @@ public class ImageHandler extends HttpServlet implements ServletContextListener 
 
     public static void addImage(String filename, byte[] imgData) {
         data.put(filename, imgData);
-        logger.warning(filename + " is loaded");
+        logger.info(filename + " is loaded");
     }
 }
