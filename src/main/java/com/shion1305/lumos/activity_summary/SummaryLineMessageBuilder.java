@@ -101,6 +101,6 @@ public class SummaryLineMessageBuilder {
                 .paddingBottom(FlexPaddingSize.NONE);
         bubbleBuilder.hero(heroB.layout(FlexLayout.HORIZONTAL).build())
                 .body(bodyB.build());
-        return FlexMessage.builder().contents(bubbleBuilder.build()).altText("Lumos").build();
+        return FlexMessage.builder().contents(bubbleBuilder.build()).altText("Lumos 活動状況").build();
     }
 }

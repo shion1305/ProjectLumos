@@ -16,7 +16,7 @@ public class BevelTest {
         BufferedImage next = ImageIO.read(new File("C:\\Users\\shion\\OneDrive\\Welcome\\Active\\YokohamaNationalUniversity\\Club Activity\\Lumos\\400ppi\\next.png"));
         BufferedImage text_activity = ImageIO.read(new File("C:\\Users\\shion\\OneDrive\\Welcome\\Active\\YokohamaNationalUniversity\\Club Activity\\Lumos\\400ppi\\のアクティビティ.png"));
         BufferedImage card = new BufferedImage(1800, 1040, BufferedImage.TYPE_INT_ARGB);
-        card = GradationThemeCreator.createGradation(card, 0xFF0fdb46, 0xFF1c2cba);
+        card = GradationThemeCreator.createGradation(card, 0xff126ade, 0xFF1c2cba);
 //        card = GradationThemeCreator.createGradation(card, 0xff353535, 0xFF282828);
         int pY = 60;
         for (int i = 0, pX = 720; i < 4; i++, pX += 260) {
@@ -39,7 +39,7 @@ public class BevelTest {
         g.drawImage(text_activity, 0, 30, 740, 710, null);
         Font font = new Font("Kaisei Tokumin", Font.PLAIN, 200);
         g.setFont(font);
-        g.drawString("12", 100, 200); //文字を書く
+        g.drawString("12", 90, 200); //文字を書く
         g.dispose();
         ImageIO.write(card, "png", new File("testing.png"));
     }
