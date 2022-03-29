@@ -5,14 +5,25 @@ import discord4j.core.GatewayDiscordClient;
 import discord4j.gateway.intent.IntentSet;
 
 public class DiscordClientManager {
-    private static GatewayDiscordClient client;
+    private static final GatewayDiscordClient gateway;
+    private static final long applicationId;
+
+    static {
+        DiscordClient client = DiscordClient.create(ConfigManager.getConfig("DiscordToken"));
+        gateway = DiscordClient.create(ConfigManager.getConfig("DiscordToken")).gateway()
+                .setEnabledIntents(IntentSet.all())
+                .login().block();
+        applicationId = client.getApplicationId().block();
+    }
+
+    private DiscordClientManager() {
+    }
 
     public static GatewayDiscordClient getClient() {
-        if (client == null) {
-            client = DiscordClient.create(ConfigManager.getConfig("DiscordToken")).gateway()
-                    .setEnabledIntents(IntentSet.all())
-                    .login().block();
-        }
-        return client;
+        return gateway;
+    }
+
+    public static long getApplicationId() {
+        return applicationId;
     }
 }
