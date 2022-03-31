@@ -2,15 +2,22 @@ package com.shion1305.lumos.discord;
 
 import com.shion1305.lumos.general.DiscordClientManager;
 import discord4j.common.util.Snowflake;
+import discord4j.core.event.domain.interaction.ChatInputInteractionEvent;
 import discord4j.core.event.domain.message.MessageCreateEvent;
+import discord4j.core.object.command.ApplicationCommand;
+import discord4j.core.object.command.ApplicationCommandOption;
 import discord4j.core.object.entity.Message;
-import discord4j.discordjson.json.ApplicationCommandData;
-import discord4j.discordjson.json.gateway.ApplicationCommandCreate;
+import discord4j.core.spec.InteractionReplyEditSpec;
+import discord4j.discordjson.json.ApplicationCommandOptionData;
+import discord4j.discordjson.json.ApplicationCommandRequest;
 import reactor.core.Disposable;
 
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import javax.servlet.annotation.WebListener;
+import javax.servlet.annotation.WebServlet;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
@@ -18,18 +25,81 @@ import java.util.regex.Pattern;
 
 @WebListener
 public class DiscordCleaner implements ServletContextListener {
-    static Disposable disposable;
-    Logger logger = Logger.getLogger("DiscordCleaner");
+    static List<Disposable> disposable = new ArrayList<>();
+    static final Logger logger = Logger.getLogger("DiscordCleaner");
+//
+//    static List<Long> discordCommands = DiscordClientManager.getClient().getRestClient()
+//            .getApplicationService()
+//            .getGlobalApplicationCommands(DiscordClientManager.getApplicationId())
+//            .map(applicationCommandData -> Long.parseLong(applicationCommandData.id()))
+//            .collectList()
+//            .block();
 
     @Override
     public void contextInitialized(ServletContextEvent sce) {
-        ApplicationCommandCreate.builder().command(
-                ApplicationCommandData.builder()
-                        .applicationId("933021504319422544")
+        System.out.println("hahahaha");
+        logger.severe("aaaaa");
+        listenCommandDeletion();
+        listenNormalDeletion();
+    }
 
-                        .build()
-        ).build();
-        disposable =
+    private void listenCommandDeletion() {
+        System.out.println("Command being loaded");
+        logger.severe("LOADING COMMAND");
+        ApplicationCommandRequest request = ApplicationCommandRequest.builder()
+                .name("delete")
+                .description("先頭から指定した数のメッセージを削除します。")
+                .type(ApplicationCommand.Type.CHAT_INPUT.getValue())
+                .addOption(ApplicationCommandOptionData.builder()
+                        .name("size")
+                        .description("削除するメッセージの数")
+                        .type(ApplicationCommandOption.Type.INTEGER.getValue())
+                        .required(true)
+                        .build())
+                .build();
+        DiscordClientManager.getClient().getRestClient().getApplicationService()
+                .createGlobalApplicationCommand(DiscordClientManager.getApplicationId(), request)
+                .doOnError(throwable -> {
+                    logger.severe("Error in deletion command setup sequence.");
+                    throwable.printStackTrace();
+                })
+                .doOnSuccess(applicationCommandData -> {
+                    logger.severe("Loading  of command: "+applicationCommandData.name()+" has been completed.");
+                })
+                .subscribe();
+        disposable.add(DiscordClientManager.getClient()
+                .on(ChatInputInteractionEvent.class)
+                .subscribe(chatInputInteractionEvent -> {
+                    long size = chatInputInteractionEvent.getOption("size").get().getValue().get().asLong();
+                    if (size > 30) {
+                        chatInputInteractionEvent.reply("削除件数が多すぎます。30件以下にしてください。").withEphemeral(true).block();
+                        return;
+                    }
+                    if (size < 1) {
+                        chatInputInteractionEvent.reply("件数が無効な数です。").withEphemeral(true).block();
+                        return;
+                    }
+                    chatInputInteractionEvent.deferReply().withEphemeral(true).block();
+                    Snowflake mesID = chatInputInteractionEvent.createFollowup("削除を開始していました...").withEphemeral(true).block().getId();
+                    chatInputInteractionEvent.getInteraction().getChannel().subscribe(messageChannel -> {
+                        var ref = new Object() {
+                            int count = 0;
+                        };
+                        messageChannel.getMessagesBefore(messageChannel.getLastMessageId().get())
+                                .take(size).subscribe(message1 -> {
+                                    message1.delete().block();
+                                    if (++ref.count != size)
+                                        chatInputInteractionEvent.editFollowup(mesID, InteractionReplyEditSpec.builder()
+                                                .contentOrNull(String.format("IN PROGRESS %02d/%02d", ref.count, size)).build()).block();
+                                    else
+                                        chatInputInteractionEvent.editFollowup(mesID, InteractionReplyEditSpec.builder().contentOrNull(size + "件の削除が完了しました。").build()).block();
+                                });
+                    });
+                }));
+    }
+
+    private void listenNormalDeletion() {
+        disposable.add(
                 DiscordClientManager.getClient()
                         .on(MessageCreateEvent.class)
                         .subscribe(messageCreateEvent -> {
@@ -55,11 +125,19 @@ public class DiscordCleaner implements ServletContextListener {
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }
-                        });
+                        }));
+    }
+
+    private void removeCommand(Long id) {
+        DiscordClientManager.getClient().getRestClient()
+                .getApplicationService()
+                .deleteGlobalApplicationCommand(DiscordClientManager.getApplicationId(), id)
+                .subscribe();
     }
 
     @Override
     public void contextDestroyed(ServletContextEvent sce) {
-        disposable.dispose();
+        disposable.forEach(Disposable::dispose);
+//        discordCommands.forEach(this::removeCommand);
     }
 }
