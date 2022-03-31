@@ -75,7 +75,7 @@ public class DiscordCleaner implements ServletContextListener {
                         return;
                     }
                     chatInputInteractionEvent.deferReply().withEphemeral(true).block();
-                    Snowflake mesID = chatInputInteractionEvent.createFollowup("削除を開始していました...").withEphemeral(true).block().getId();
+                    Snowflake mesID = chatInputInteractionEvent.createFollowup("削除を開始します...").withEphemeral(true).block().getId();
                     chatInputInteractionEvent.getInteraction().getChannel().subscribe(messageChannel -> {
                         var ref = new Object() {
                             int count = 0;
