@@ -15,7 +15,6 @@ import reactor.core.Disposable;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import javax.servlet.annotation.WebListener;
-import javax.servlet.annotation.WebServlet;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -27,25 +26,21 @@ import java.util.regex.Pattern;
 public class DiscordCleaner implements ServletContextListener {
     static List<Disposable> disposable = new ArrayList<>();
     static final Logger logger = Logger.getLogger("DiscordCleaner");
-//
-//    static List<Long> discordCommands = DiscordClientManager.getClient().getRestClient()
-//            .getApplicationService()
-//            .getGlobalApplicationCommands(DiscordClientManager.getApplicationId())
-//            .map(applicationCommandData -> Long.parseLong(applicationCommandData.id()))
-//            .collectList()
-//            .block();
+
+    static List<Long> discordCommands = DiscordClientManager.getClient().getRestClient()
+            .getApplicationService()
+            .getGlobalApplicationCommands(DiscordClientManager.getApplicationId())
+            .map(applicationCommandData -> Long.parseLong(applicationCommandData.id()))
+            .collectList()
+            .block();
 
     @Override
     public void contextInitialized(ServletContextEvent sce) {
-        System.out.println("hahahaha");
-        logger.severe("aaaaa");
         listenCommandDeletion();
         listenNormalDeletion();
     }
 
     private void listenCommandDeletion() {
-        System.out.println("Command being loaded");
-        logger.severe("LOADING COMMAND");
         ApplicationCommandRequest request = ApplicationCommandRequest.builder()
                 .name("delete")
                 .description("先頭から指定した数のメッセージを削除します。")
@@ -64,7 +59,7 @@ public class DiscordCleaner implements ServletContextListener {
                     throwable.printStackTrace();
                 })
                 .doOnSuccess(applicationCommandData -> {
-                    logger.severe("Loading  of command: "+applicationCommandData.name()+" has been completed.");
+                    logger.info("Loading  of command: "+applicationCommandData.name()+" has been completed.");
                 })
                 .subscribe();
         disposable.add(DiscordClientManager.getClient()
@@ -105,13 +100,11 @@ public class DiscordCleaner implements ServletContextListener {
                         .subscribe(messageCreateEvent -> {
                             try {
                                 Message message = messageCreateEvent.getMessage();
-                                logger.info(message.getContent());
                                 Pattern pattern = Pattern.compile("^!!delete ([\\d]+)$");
                                 Matcher matcher = pattern.matcher(message.getContent());
                                 Optional<Message> ref = messageCreateEvent.getMessage().getReferencedMessage();
                                 if (matcher.matches() && messageCreateEvent.getMessage().getReferencedMessage().isPresent() && message.getAuthorAsMember().block().getRoleIds().contains(Snowflake.of(955887232819015720L))) {
                                     int counter = Integer.parseInt(matcher.group(1));
-                                    logger.info(String.valueOf(counter));
                                     messageCreateEvent.getMessage().getChannel().subscribe(messageChannel -> {
                                         messageChannel.getMessagesBefore(ref.get().getId())
                                                 .take(counter - 1)
@@ -138,6 +131,6 @@ public class DiscordCleaner implements ServletContextListener {
     @Override
     public void contextDestroyed(ServletContextEvent sce) {
         disposable.forEach(Disposable::dispose);
-//        discordCommands.forEach(this::removeCommand);
+        discordCommands.forEach(this::removeCommand);
     }
 }

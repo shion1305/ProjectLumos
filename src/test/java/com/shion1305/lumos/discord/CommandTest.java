@@ -5,10 +5,6 @@ import org.junit.jupiter.api.Test;
 
 class CommandTest {
     @Test
-    void setupDeleteCommand() throws InterruptedException {
-    }
-
-    @Test
     void removeAllCommands() throws InterruptedException {
         DiscordClientManager.getClient().getRestClient().getApplicationService()
                 .getGlobalApplicationCommands(DiscordClientManager.getApplicationId())
