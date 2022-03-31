@@ -5,7 +5,8 @@
       <paths name="shion1305">
         <serverdata>
           <mappings>
-            <mapping deploy="/opt/apache-tomcat-9.0.54/webapps" local="$PROJECT_DIR$" web="/" />
+            <mapping local="$PROJECT_DIR$/src" web="/" />
+            <mapping local="$PROJECT_DIR$" web="/" />
           </mappings>
         </serverdata>
       </paths>
