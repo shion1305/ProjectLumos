@@ -13,6 +13,29 @@ public class ConfigManager {
     private static Properties config;
     private final static String configDir = System.getProperty("user.home") + "/ShionServerConfig/Lumos/config.properties";
 
+    public enum Config {
+        DISCORD_TOKEN("DiscordToken"),
+        WELCOME_CHANNEL("WelcomeChannel"),
+        TARGET_GUILD("TargetGuild"),
+        NOX_CHANNEL("NoxChannel");
+        final String name;
+
+        Config(String name) {
+            this.name = name;
+        }
+
+        public String getName() {
+            return name;
+        }
+    }
+
+    /**
+     * REQUIRED PROPERTIES IN config.properties
+     * - DiscordToken
+     * - WelcomeChannel
+     * - TargetGuild
+     * - NoxChannel
+     */
     public static String getConfig(String field) {
         if (config == null) {
             config = new Properties();
@@ -25,5 +48,9 @@ public class ConfigManager {
             }
         }
         return config.getProperty(field);
+    }
+
+    public static String getConfig(Config config) {
+        return getConfig(config.getName());
     }
 }
