@@ -27,17 +27,20 @@ public class DiscordCleaner implements ServletContextListener {
     static List<Disposable> disposable = new ArrayList<>();
     static final Logger logger = Logger.getLogger("DiscordCleaner");
 
-    static List<Long> discordCommands = DiscordClientManager.getClient().getRestClient()
-            .getApplicationService()
-            .getGlobalApplicationCommands(DiscordClientManager.getApplicationId())
-            .map(applicationCommandData -> Long.parseLong(applicationCommandData.id()))
-            .collectList()
-            .block();
+    static List<Long> discordCommands;
 
     @Override
     public void contextInitialized(ServletContextEvent sce) {
         listenCommandDeletion();
         listenNormalDeletion();
+        DiscordClientManager.getClient().getRestClient()
+                .getApplicationService()
+                .getGlobalApplicationCommands(DiscordClientManager.getApplicationId())
+                .map(applicationCommandData -> Long.parseLong(applicationCommandData.id()))
+                .collectList()
+                .subscribe(longs -> {
+                    discordCommands = longs;
+                });
     }
 
     private void listenCommandDeletion() {
