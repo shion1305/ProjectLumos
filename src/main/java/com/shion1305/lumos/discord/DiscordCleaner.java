@@ -64,6 +64,7 @@ public class DiscordCleaner implements ServletContextListener {
                 .subscribe();
         disposable.add(DiscordClientManager.getClient()
                 .on(ChatInputInteractionEvent.class)
+                .filter(event -> event.getInteraction().getMember().get().getRoleIds().contains(Snowflake.of(955887232819015720L)))
                 .subscribe(chatInputInteractionEvent -> {
                     long size = chatInputInteractionEvent.getOption("size").get().getValue().get().asLong();
                     if (size > 30) {
