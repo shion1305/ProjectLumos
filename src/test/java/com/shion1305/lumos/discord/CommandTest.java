@@ -19,4 +19,14 @@ class CommandTest {
                 });
         Thread.sleep(10000);
     }
+    @Test
+    void listGlobalCommands() throws InterruptedException {
+        DiscordClientManager.getClient().getRestClient()
+                .getApplicationService().getGlobalApplicationCommands(DiscordClientManager.getApplicationId())
+                .subscribe(applicationCommandData -> {
+                    System.out.println(applicationCommandData.name());
+                    System.out.println(applicationCommandData.id());
+                });
+        Thread.sleep(100000);
+    }
 }
