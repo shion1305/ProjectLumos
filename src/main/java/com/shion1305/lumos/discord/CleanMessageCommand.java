@@ -23,7 +23,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @WebListener
-public class DiscordCleaner implements ServletContextListener {
+public class CleanMessageCommand implements ServletContextListener {
     static List<Disposable> disposable = new ArrayList<>();
     static final Logger logger = Logger.getLogger("DiscordCleaner");
 
@@ -62,7 +62,7 @@ public class DiscordCleaner implements ServletContextListener {
                     throwable.printStackTrace();
                 })
                 .doOnSuccess(applicationCommandData -> {
-                    logger.info("Loading  of command: "+applicationCommandData.name()+" has been completed.");
+                    logger.info("Loading  of command: " + applicationCommandData.name() + " has been completed.");
                 })
                 .subscribe();
         disposable.add(DiscordClientManager.getClient()
