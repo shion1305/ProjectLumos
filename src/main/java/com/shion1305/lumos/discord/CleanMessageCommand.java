@@ -2,48 +2,31 @@ package com.shion1305.lumos.discord;
 
 import com.shion1305.lumos.general.DiscordClientManager;
 import discord4j.common.util.Snowflake;
-import discord4j.core.event.domain.interaction.ChatInputInteractionEvent;
-import discord4j.core.event.domain.message.MessageCreateEvent;
 import discord4j.core.object.command.ApplicationCommand;
 import discord4j.core.object.command.ApplicationCommandOption;
 import discord4j.core.object.entity.Message;
 import discord4j.core.spec.InteractionReplyEditSpec;
 import discord4j.discordjson.json.ApplicationCommandOptionData;
 import discord4j.discordjson.json.ApplicationCommandRequest;
-import reactor.core.Disposable;
 
-import javax.servlet.ServletContextEvent;
-import javax.servlet.ServletContextListener;
-import javax.servlet.annotation.WebListener;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-@WebListener
-public class CleanMessageCommand implements ServletContextListener {
-    static List<Disposable> disposable = new ArrayList<>();
+public class CleanMessageCommand {
     static final Logger logger = Logger.getLogger("DiscordCleaner");
 
-    static List<Long> discordCommands;
+    private CleanMessageCommand() {
 
-    @Override
-    public void contextInitialized(ServletContextEvent sce) {
-        listenCommandDeletion();
-        listenNormalDeletion();
-        DiscordClientManager.getClient().getRestClient()
-                .getApplicationService()
-                .getGlobalApplicationCommands(DiscordClientManager.getApplicationId())
-                .map(applicationCommandData -> Long.parseLong(applicationCommandData.id()))
-                .collectList()
-                .subscribe(longs -> {
-                    discordCommands = longs;
-                });
     }
 
-    private void listenCommandDeletion() {
+    static synchronized public void initiate() {
+        listenCommandDeletion();
+        listenNormalDeletion();
+    }
+
+    private static void listenCommandDeletion() {
         ApplicationCommandRequest request = ApplicationCommandRequest.builder()
                 .name("delete")
                 .description("先頭から指定した数のメッセージを削除します。")
@@ -64,83 +47,65 @@ public class CleanMessageCommand implements ServletContextListener {
                 .doOnSuccess(applicationCommandData -> {
                     logger.info("Loading  of command: " + applicationCommandData.name() + " has been completed.");
                 })
-                .subscribe();
-        disposable.add(DiscordClientManager.getClient()
-                .on(ChatInputInteractionEvent.class)
-                .filter(event -> event.getInteraction().getMember().get().getRoleIds().contains(Snowflake.of(955887232819015720L)))
-                .subscribe(chatInputInteractionEvent -> {
-                    long size = chatInputInteractionEvent.getOption("size").get().getValue().get().asLong();
-                    if (size > 30) {
-                        chatInputInteractionEvent.reply("削除件数が多すぎます。30件以下にしてください。").withEphemeral(true).block();
-                        return;
-                    }
-                    if (size < 1) {
-                        chatInputInteractionEvent.reply("件数が無効な数です。").withEphemeral(true).block();
-                        return;
-                    }
-                    chatInputInteractionEvent.deferReply().withEphemeral(true).block();
-                    Snowflake mesID = chatInputInteractionEvent.createFollowup("削除を開始します...").withEphemeral(true).block().getId();
-                    chatInputInteractionEvent.getInteraction().getChannel().subscribe(messageChannel -> {
-                        var ref = new Object() {
-                            int count = 0;
-                        };
-                        messageChannel.getMessagesBefore(messageChannel.getLastMessageId().get())
-                                .take(size).subscribe(message1 -> {
-                                    message1.delete().block();
-                                    if (++ref.count != size)
-                                        chatInputInteractionEvent.editFollowup(mesID, InteractionReplyEditSpec.builder()
-                                                .contentOrNull(String.format("IN PROGRESS %02d/%02d", ref.count, size)).build()).block();
-                                    else
-                                        chatInputInteractionEvent.editFollowup(mesID, InteractionReplyEditSpec.builder().contentOrNull(size + "件の削除が完了しました。").build()).block();
-                                });
+                .subscribe(applicationCommandData -> {
+                    CommandManager.addCommand(applicationCommandData.name(), event -> {
+                        long size = event.getOption("size").get().getValue().get().asLong();
+                        if (size > 30) {
+                            event.reply("削除件数が多すぎます。30件以下にしてください。").withEphemeral(true).block();
+                            return;
+                        }
+                        if (size < 1) {
+                            event.reply("件数が無効な数です。").withEphemeral(true).block();
+                            return;
+                        }
+                        event.deferReply().withEphemeral(true).block();
+                        Snowflake mesID = event.createFollowup("削除を開始します...").withEphemeral(true).block().getId();
+                        event.getInteraction().getChannel().subscribe(messageChannel -> {
+                            var ref = new Object() {
+                                int count = 0;
+                            };
+                            messageChannel.getMessagesBefore(messageChannel.getLastMessageId().get())
+                                    .take(size).subscribe(message1 -> {
+                                        message1.delete().block();
+                                        if (++ref.count != size)
+                                            event.editFollowup(mesID, InteractionReplyEditSpec.builder()
+                                                    .contentOrNull(String.format("IN PROGRESS %02d/%02d", ref.count, size)).build()).block();
+                                        else
+                                            event.editFollowup(mesID, InteractionReplyEditSpec.builder().contentOrNull(size + "件の削除が完了しました。").build()).block();
+                                    });
+                        });
                     });
-                }));
+                });
     }
 
-    private void listenNormalDeletion() {
-        disposable.add(
-                DiscordClientManager.getClient()
-                        .on(MessageCreateEvent.class)
-                        .subscribe(messageCreateEvent -> {
-                            try {
-                                Message message = messageCreateEvent.getMessage();
-                                Pattern pattern = Pattern.compile("^!!delete ([\\d]+)$");
-                                Matcher matcher = pattern.matcher(message.getContent());
-                                Optional<Message> ref = messageCreateEvent.getMessage().getReferencedMessage();
-                                if (matcher.matches() && messageCreateEvent.getMessage().getReferencedMessage().isPresent() && message.getAuthorAsMember().block().getRoleIds().contains(Snowflake.of(955887232819015720L))) {
-                                    int counter = Integer.parseInt(matcher.group(1));
-                                    if (counter < 31 && counter > 0) {
-                                        messageCreateEvent.getMessage().getChannel().subscribe(messageChannel -> {
-                                            messageChannel.getMessagesBefore(ref.get().getId())
-                                                    .take(counter - 1)
-                                                    .subscribe(message1 -> {
-                                                        message1.delete().block();
-                                                    });
-                                        });
-                                        ref.get().delete().block();
-                                        message.delete().block();
-                                    } else {
-                                        messageCreateEvent.getMessage().getChannel().subscribe(messageChannel -> {
-                                            messageChannel.createMessage("削除件数は1~30の範囲で有効です。").block();
-                                        });
-                                    }
-                                }
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
-                        }));
-    }
-
-    private void removeCommand(Long id) {
-        DiscordClientManager.getClient().getRestClient()
-                .getApplicationService()
-                .deleteGlobalApplicationCommand(DiscordClientManager.getApplicationId(), id)
-                .subscribe();
-    }
-
-    @Override
-    public void contextDestroyed(ServletContextEvent sce) {
-        disposable.forEach(Disposable::dispose);
-        discordCommands.forEach(this::removeCommand);
+    private static void listenNormalDeletion() {
+        CommandManager.addSpecialCommand(Pattern.compile("^!!delete ([\\d]+)$"), messageCreateEvent -> {
+            try {
+                Message message = messageCreateEvent.getMessage();
+                Pattern pattern = Pattern.compile("^!!delete ([\\d]+)$");
+                Matcher matcher = pattern.matcher(message.getContent());
+                Optional<Message> ref = messageCreateEvent.getMessage().getReferencedMessage();
+                if (matcher.matches() && messageCreateEvent.getMessage().getReferencedMessage().isPresent() && message.getAuthorAsMember().block().getRoleIds().contains(Snowflake.of(955887232819015720L))) {
+                    int counter = Integer.parseInt(matcher.group(1));
+                    if (counter < 31 && counter > 0) {
+                        messageCreateEvent.getMessage().getChannel().subscribe(messageChannel -> {
+                            messageChannel.getMessagesBefore(ref.get().getId())
+                                    .take(counter - 1)
+                                    .subscribe(message1 -> {
+                                        message1.delete().block();
+                                    });
+                        });
+                        ref.get().delete().block();
+                        message.delete().block();
+                    } else {
+                        messageCreateEvent.getMessage().getChannel().subscribe(messageChannel -> {
+                            messageChannel.createMessage("削除件数は1~30の範囲で有効です。").block();
+                        });
+                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
     }
 }
