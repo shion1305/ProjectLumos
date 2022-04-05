@@ -21,7 +21,7 @@ public class WelcomeSender implements ServletContextListener {
     @Override
     public void contextInitialized(ServletContextEvent sce) {
         GatewayDiscordClient client = DiscordClientManager.getClient();
-        RestChannel channel = Objects.requireNonNull(client.getChannelById(Snowflake.of(ConfigManager.getConfig(ConfigManager.Config.DISCORD_TOKEN))).block()).getRestChannel();
+        RestChannel channel = Objects.requireNonNull(client.getChannelById(Snowflake.of(ConfigManager.getConfig(ConfigManager.Config.WELCOME_CHANNEL))).block()).getRestChannel();
         client.on(MemberJoinEvent.class)
                 .filter(memberJoinEvent -> !memberJoinEvent.getMember().isBot())
                 .subscribe(memberJoinEvent -> {
