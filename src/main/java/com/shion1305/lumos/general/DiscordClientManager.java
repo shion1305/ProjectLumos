@@ -9,8 +9,8 @@ public class DiscordClientManager {
     private static final long applicationId;
 
     static {
-        DiscordClient client = DiscordClient.create(ConfigManager.getConfig("DiscordToken"));
-        gateway = DiscordClient.create(ConfigManager.getConfig("DiscordToken")).gateway()
+        DiscordClient client = DiscordClient.create(ConfigManager.getConfig(ConfigManager.Config.DISCORD_TOKEN));
+        gateway = DiscordClient.create(ConfigManager.getConfig(ConfigManager.Config.DISCORD_TOKEN)).gateway()
                 .setEnabledIntents(IntentSet.all())
                 .login().block();
         applicationId = client.getApplicationId().block();
