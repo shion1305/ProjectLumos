@@ -17,10 +17,10 @@ import java.util.regex.Pattern;
 
 @WebListener
 public class CommandManager implements ServletContextListener {
-    static List<Long> discordCommands=new ArrayList<>();
-    static List<Disposable> disposables = new ArrayList<>();
-    static HashMap<String, Consumer<ChatInputInteractionEvent>> commands = new HashMap<>();
-    static HashMap<Pattern, Consumer<MessageCreateEvent>> specialCommands = new HashMap<>();
+    private static List<Long> discordCommands = new ArrayList<>();
+    private static final List<Disposable> disposables = new ArrayList<>();
+    private static final HashMap<String, Consumer<ChatInputInteractionEvent>> commands = new HashMap<>();
+    private static final HashMap<Pattern, Consumer<MessageCreateEvent>> specialCommands = new HashMap<>();
 
 
     @Override
@@ -67,18 +67,22 @@ public class CommandManager implements ServletContextListener {
     }
 
     private static void handleRequest(ChatInputInteractionEvent event) {
-        commands.get(event.getCommandName()).accept(event);
+        try {
+            commands.get(event.getCommandName()).accept(event);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private static void handleSpecialCommandRequest(MessageCreateEvent event) {
         specialCommands.entrySet().parallelStream().forEach(command -> {
-            Matcher m = command.getKey().matcher(event.getMessage().getContent());
-            if (m.matches()) {
-                try {
+            try {
+                Matcher m = command.getKey().matcher(event.getMessage().getContent());
+                if (m.matches()) {
                     command.getValue().accept(event);
-                } catch (Exception e) {
-                    e.printStackTrace();
                 }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         });
     }
