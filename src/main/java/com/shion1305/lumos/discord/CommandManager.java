@@ -38,7 +38,7 @@ public class CommandManager implements ServletContextListener {
 
     private void initiateCommands() {
         CleanMessageCommand.initiate();
-//        NoxCommand.initiate();
+        NoxCommand.initiate();
         disposables.add(
                 DiscordClientManager.getClient()
                         .on(ChatInputInteractionEvent.class)
