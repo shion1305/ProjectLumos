@@ -109,15 +109,21 @@ public class DiscordCleaner implements ServletContextListener {
                                 Optional<Message> ref = messageCreateEvent.getMessage().getReferencedMessage();
                                 if (matcher.matches() && messageCreateEvent.getMessage().getReferencedMessage().isPresent() && message.getAuthorAsMember().block().getRoleIds().contains(Snowflake.of(955887232819015720L))) {
                                     int counter = Integer.parseInt(matcher.group(1));
-                                    messageCreateEvent.getMessage().getChannel().subscribe(messageChannel -> {
-                                        messageChannel.getMessagesBefore(ref.get().getId())
-                                                .take(counter - 1)
-                                                .subscribe(message1 -> {
-                                                    message1.delete().block();
-                                                });
-                                    });
-                                    ref.get().delete().block();
-                                    message.delete().block();
+                                    if (counter < 31 && counter > 0) {
+                                        messageCreateEvent.getMessage().getChannel().subscribe(messageChannel -> {
+                                            messageChannel.getMessagesBefore(ref.get().getId())
+                                                    .take(counter - 1)
+                                                    .subscribe(message1 -> {
+                                                        message1.delete().block();
+                                                    });
+                                        });
+                                        ref.get().delete().block();
+                                        message.delete().block();
+                                    } else {
+                                        messageCreateEvent.getMessage().getChannel().subscribe(messageChannel -> {
+                                            messageChannel.createMessage("削除件数は1~30の範囲で有効です。").block();
+                                        });
+                                    }
                                 }
                             } catch (Exception e) {
                                 e.printStackTrace();
