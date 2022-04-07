@@ -17,7 +17,9 @@ public class ConfigManager {
         DISCORD_TOKEN("DiscordToken"),
         WELCOME_CHANNEL("WelcomeChannel"),
         TARGET_GUILD("TargetGuild"),
-        NOX_CHANNEL("NoxChannel");
+        NOX_CHANNEL("NoxChannel"),
+        TWITTER_API_KEY("TwitterApiKey"),
+        TWITTER_SECRET_KEY("TwitterApiSecret");
         final String name;
 
         Config(String name) {
