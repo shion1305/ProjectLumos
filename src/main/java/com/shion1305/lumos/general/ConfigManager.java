@@ -19,7 +19,9 @@ public class ConfigManager {
         TARGET_GUILD("TargetGuild"),
         NOX_CHANNEL("NoxChannel"),
         TWITTER_API_KEY("TwitterApiKey"),
-        TWITTER_SECRET_KEY("TwitterApiSecret");
+        TWITTER_SECRET_KEY("TwitterApiSecret"),
+        TWITTER_ACCESS_TOKEN("TwitterApiAccessToken"),
+        TWITTER_ACCESS_TOKEN_SECRET("TwitterApiAccessTokenSecret");
         final String name;
 
         Config(String name) {
