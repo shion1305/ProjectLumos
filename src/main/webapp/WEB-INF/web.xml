@@ -9,6 +9,9 @@
     <listener>
         <listener-class>com.shion1305.lumos.activity_summary.SummaryMessageHandler</listener-class>
     </listener>
+    <listener>
+        <listener-class>com.shion1305.lumos.discord.CommandManager</listener-class>
+    </listener>
     <security-constraint>
         <web-resource-collection>
             <web-resource-name>secured page</web-resource-name>
