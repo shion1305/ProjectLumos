@@ -49,6 +49,7 @@ public class NoxCommand {
                                         .author(EmbedCreateFields.Author.of(member.getDisplayName(), member.getAvatarUrl(), member.getAvatarUrl()))
                                         .description(msg[Math.abs(random.nextInt() % msg.length)] + " <@" + member.getId().asLong() + ">").build().asRequest();
                                 channel.getRestChannel().createMessage(resp).block();
+                                event.createFollowup("Noxコマンドを発動しました! お疲れ!").block();
                             } else {
                                 event.createFollowup("このコマンドはボイスチャンネルに入っている時のみ有効です。").block();
                             }
