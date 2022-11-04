@@ -12,7 +12,7 @@ class CommandTest {
                     System.out.println("CommandDataReceived: " + applicationCommandData.name());
                     DiscordClientManager.getClient().getRestClient()
                             .getApplicationService()
-                            .deleteGlobalApplicationCommand(DiscordClientManager.getApplicationId(), Long.parseLong(applicationCommandData.id()))
+                            .deleteGlobalApplicationCommand(DiscordClientManager.getApplicationId(), applicationCommandData.id().asLong())
                             .doOnSuccess(unused -> {
                                 System.out.println("SuccessfullyDeleted: " + applicationCommandData.name());
                             }).subscribe();

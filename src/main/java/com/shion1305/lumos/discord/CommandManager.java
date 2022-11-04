@@ -29,7 +29,7 @@ public class CommandManager implements ServletContextListener {
         DiscordClientManager.getClient().getRestClient()
                 .getApplicationService()
                 .getGlobalApplicationCommands(DiscordClientManager.getApplicationId())
-                .map(applicationCommandData -> Long.parseLong(applicationCommandData.id()))
+                .map(applicationCommandData -> applicationCommandData.id().asLong())
                 .collectList()
                 .subscribe(longs -> {
                     discordCommands = longs;
