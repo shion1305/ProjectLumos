@@ -3,4 +3,5 @@
 /gradle
 /build/*
 /.gradle
+/.idea
 /testImage.png
