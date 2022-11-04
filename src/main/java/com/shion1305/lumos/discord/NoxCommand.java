@@ -16,13 +16,13 @@ import java.util.Random;
 public class NoxCommand {
     private static Channel channel;
     private static final String[] msg = new String[]{"お疲れ!", "Goodbye! See you again!!", "See ya!", "またな!", "printf(\"Goodbye, world!\");", "続けるにはENTERを押すかコマンドを入力してください", "terminated with status code 0", "Console.WriteLine(\"Goodbye, world!\");"};
+    private static Random random = new Random();
 
     private NoxCommand() {
 
     }
 
     synchronized static void initiate() {
-        Random random = new Random();
         channel = DiscordClientManager.getClient().getChannelById(Snowflake.of(ConfigManager.getConfig(ConfigManager.Config.NOX_CHANNEL)))
                 .block();
         ApplicationCommandRequest request = ApplicationCommandRequest.builder()
