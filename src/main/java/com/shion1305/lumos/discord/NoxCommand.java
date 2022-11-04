@@ -11,12 +11,15 @@ import discord4j.core.spec.EmbedCreateSpec;
 import discord4j.discordjson.json.ApplicationCommandRequest;
 import discord4j.rest.util.Color;
 
+import java.util.Optional;
 import java.util.Random;
+import java.util.logging.Logger;
 
 public class NoxCommand {
     private static Channel channel;
     private static final String[] msg = new String[]{"お疲れ!", "Goodbye! See you again!!", "See ya!", "またな!", "printf(\"Goodbye, world!\");", "続けるにはENTERを押すかコマンドを入力してください", "terminated with status code 0", "Console.WriteLine(\"Goodbye, world!\");"};
-    private static Random random = new Random();
+    private static final Random random = new Random();
+    private static final Logger logger = Logger.getLogger("NoxCommand");
 
     private NoxCommand() {
 
@@ -32,12 +35,11 @@ public class NoxCommand {
                 .build();
         DiscordClientManager.getClient().getRestClient().getApplicationService()
                 .createGlobalApplicationCommand(DiscordClientManager.getApplicationId(), request)
-                .doOnSuccess(applicationCommandData -> {
-                    System.out.println("NoxCommand has been mounted");
-                })
+                .doOnSuccess(applicationCommandData ->
+                        logger.info("NoxCommand has been mounted"))
                 .doOnError(throwable -> {
                     throwable.printStackTrace();
-                    System.out.println("ERROR");
+                    logger.warning("NoxCommand failed to mount");
                 })
                 .subscribe(data ->
                         CommandManager.addCommand(data.name(), event -> {
