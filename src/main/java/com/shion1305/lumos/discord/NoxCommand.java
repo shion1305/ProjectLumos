@@ -44,15 +44,20 @@ public class NoxCommand {
                             event.deferReply().withEphemeral(true).block();
                             Member member = event.getInteraction().getMember().get();
                             if (member.getVoiceState().block() != null) {
-                                var resp = EmbedCreateSpec.builder()
-                                        .color(Color.MOON_YELLOW)
-                                        .author(EmbedCreateFields.Author.of(member.getDisplayName(), member.getAvatarUrl(), member.getAvatarUrl()))
-                                        .description(msg[Math.abs(random.nextInt() % msg.length)] + " <@" + member.getId().asLong() + ">").build().asRequest();
-                                channel.getRestChannel().createMessage(resp).block();
+                                channel.getRestChannel().createMessage(createNoxMessage(member).asRequest()).block();
                                 event.createFollowup("Noxコマンドを発動しました! お疲れ!").block();
                             } else {
                                 event.createFollowup("このコマンドはボイスチャンネルに入っている時のみ有効です。").block();
                             }
                         }));
+    }
+
+    public static EmbedCreateSpec createNoxMessage(Member member) {
+        return EmbedCreateSpec.builder()
+                .color(Color.MOON_YELLOW)
+                .author(EmbedCreateFields.Author.of(member.getDisplayName(), member.getAvatarUrl(), member.getAvatarUrl()))
+                .description(member.getUsername() + " さんが退出します!  " + "<@" + member.getId().asLong() + ">")
+                .footer(EmbedCreateFields.Footer.of(msg[random.nextInt(msg.length)], null))
+                .build();
     }
 }
