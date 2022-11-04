@@ -44,7 +44,12 @@ public class NoxCommand {
                 .subscribe(data ->
                         CommandManager.addCommand(data.name(), event -> {
                             event.deferReply().withEphemeral(true).block();
-                            Member member = event.getInteraction().getMember().get();
+                            Optional<Member> o_member = event.getInteraction().getMember();
+                            if (o_member.isEmpty()) {
+                                logger.warning("NoxCommand failed to get member");
+                                return;
+                            }
+                            Member member = o_member.get();
                             if (member.getVoiceState().block() != null) {
                                 channel.getRestChannel().createMessage(createNoxMessage(member).asRequest()).block();
                                 event.createFollowup("Noxコマンドを発動しました! お疲れ!").block();
